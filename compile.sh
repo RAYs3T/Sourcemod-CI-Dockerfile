@@ -24,8 +24,8 @@ echo "Compiled smx files going to: $COMPILE_DIR"
 
 # Check if the build dir contains an include folder
 # THis is not required, but the user should see a message, if it is missing
-if [ ! -d $BUILD_DIR/includes ]; then
-	echo "WARNING: Your build directory ($BUILD_DIR) does not contain an includes folder.\n\
+if [ ! -d $BUILD_DIR/include ]; then
+	echo "INFO: Your build directory ($BUILD_DIR) does not contain an include folder. \
 This means if your plugin has non-standard (not included in sourcemod) dependencies, these cannot be loaded"
 fi
 
