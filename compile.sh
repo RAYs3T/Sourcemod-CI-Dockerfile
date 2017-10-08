@@ -42,7 +42,7 @@ do
 	fi
 	smxfile="`echo $sourcefile | sed -e 's/\.sp$/\.smx/'`"
 	echo -e "Compiling $sourcefile ..."
-	$SP_COMP_EXE $sourcefile -o$COMPILE_DIR/$smxfile $additional_params
+	$SP_COMP_EXE $sourcefile -o$COMPILE_DIR/$smxfile -i$BUILD_DIR/include $additional_params
 	RETVAL=$?
 	if [ $RETVAL -ne 0 ]; then
 		compile_failed
