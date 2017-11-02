@@ -4,7 +4,15 @@
 SP_COMP_EXE=/home/smuser/sourcemod/addons/sourcemod/scripting/spcomp
 
 # Working directory for custom plugins
-BUILD_DIR=$CI_PROJECT_DIR
+# Check if the build dor was set, if not, use the default one, provided by GitLab Runner
+if [ ! -n "${BUILD_DIR+1}" ]; then
+	if [ ! -n "${CI_PROJECT_DIR+1}" ]; then
+		echo "ERROR: Neither the BUILD_DIR nor the CI_PROJECT_DIR is set. Please provide a working directory"
+		exit 1;
+	fi
+	BUILD_DIR=$CI_PROJECT_DIR
+	echo "BUILD_DIR was not set, using default: $BUILD_DIR"
+fi
 
 # Dir for compiled plugins
 COMPILE_DIR=$BUILD_DIR/compiled

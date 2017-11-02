@@ -15,6 +15,10 @@ The script is basically looking for *.sp files in the build directory and compil
 
 So all you have to do in your .gitlab-ci.yml is *invoking the command "spcomp"* after the docker machine is started. This will then start the compilation of your plugins.
 
+#### Working directory
+The default working directory is the GitLab checkout dir. We retrive this from the environment variable `CI_PROJECT_DIR` which is set by gitlab.
+If you want to use a different one, you can simple set an environment variable called `BUILD_DIR` This will then be used by the compile script as working directory.
+
 #### Example build file for plugins using this
 You simply create you repository including you plugin(s).sp and maybe an include/ folder for third-party (.inc) includes.
 
