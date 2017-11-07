@@ -17,6 +17,24 @@ fi
 # Dir for compiled plugins
 COMPILE_DIR=$BUILD_DIR/compiled
 
+# Replace versions with git tag describe / hash if AUTO_VERSION_REPLACE is set
+if [ -n "${AUTO_VERSION_REPLACE+1}" ]; then
+	echo ""
+	echo "AUTO_VERSION_REPLACE is set, resolving ..."
+	echo -n "Resolved git version for version replacement: "
+	REPLACE_VERSION=`git describe`
+	if [ $? -eq 0 ]; then
+		echo "Using git describe output: $REPLACE_VERSION"
+	else
+		# We were unable to get a version by using "git describe", use hash instead
+		echo -n "Unable to get version replacement by using git describe, using hash instead: "
+		GIT_HASH=`git log --pretty=format:'%h' -n 1`
+		echo "$GIT_HASH"
+		REPLACE_VERSION="dev-$GIT_HASH"
+	fi
+	echo "REPLACE_VERSION=$REPLACE_VERSION"
+	echo ""
+fi
 
 additional_params=$1
 echo "Using additional params: $additional_params"
@@ -48,7 +66,20 @@ do
 		echo "No files found for compilation"
 		break;
 	fi
+
 	smxfile="`echo $sourcefile | sed -e 's/\.sp$/\.smx/'`"
+	# Replace version in file
+	if [ -n "${AUTO_VERSION_REPLACE+1}" ]; then
+		echo "Replacing version string ..." 
+		# Replace simple versions (${-version-}
+		sed -i -e 's/${-version-}/'"$REPLACE_VERSION"'/g' $sourcefile
+
+		# Insert complete define statement at placeholder
+		# // #define GIT_PLUGIN_VERSION "xxx"
+		sed -i -e 's/\/\/ ${-version-define-}/#define GIT_PLUGIN_VERSION "'"$REPLACE_VERSION"'"/g' $sourcefile
+	fi
+
+	# Invoke the compiler
 	echo -e "Compiling $sourcefile ..."
 	$SP_COMP_EXE $sourcefile -o$COMPILE_DIR/$smxfile -i$BUILD_DIR/include $additional_params
 	RETVAL=$?
