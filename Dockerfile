@@ -7,7 +7,7 @@
 FROM debian:stretch
 
 LABEL maintainer=rays3t
-LABEL version="1.2.1"
+LABEL version="1.2.2"
 LABEL description="A docker container based on debian/stretch for building sourcemod plugins (.sp).\
 This is intended to be used in an CI environment like GitLab. \
 It also adds a little wrapper script for the spcomp that abstracts the sourcemod libs from your plugin ones"
