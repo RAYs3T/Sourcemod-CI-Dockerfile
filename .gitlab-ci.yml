@@ -1,5 +1,8 @@
 image: docker:latest
 
+stages:    
+    - build
+    - test-example
 services:
   - docker:dind
 
@@ -21,3 +24,9 @@ build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   except:
     - master
+
+test-example-plugin:
+    stage: test-example
+    image: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    script:
+        - spcomp

@@ -1,0 +1,52 @@
+image: rays3t/sourcemod-plugins-builder-ci
+stages:
+  - build
+build:core:
+    stage: build
+    variables:
+        # This tells the compile.sh that is executed later to auto-replace the plugin version.
+        # This comes handy for release management. If you create a tag in GitLab, the version number is the tag name.
+        # If you don't want to use auto-generated plugin version numbers, just remove this line.
+        AUTO_VERSION_REPLACE: '1'
+    script: 
+    # This command invokes the main compile-script what is scanning for *.sp files and building them.
+    # If you just want to compile a single file, provide it as parameter
+    # If you have any errors in your files that will break the compilation process, it will break here and display the errors
+    # Note that warnings are also counted as "errors"
+    - spcomp
+    
+    # create a package dir where all the comiled files and resources goes (later)
+    - mkdir package
+    
+    # Many plugins comming with a lot of resources (skins, sounds, textures, configs, etc.).
+    # You just store all your resources in the structur you like and later organize a package for the gameserver.
+    # This way your users can easily install the plugin on their servers 
+    #
+    # copies all files from the folder resources to the folder package that was created.
+    - cp -r resources/* package
+    
+    # Now we going to create a folder structure that matches the games folder structure ...
+    # Create package dirs for scripting, include and plugins
+    - mkdir -p package/addons/sourcemod/scripting/include
+    - mkdir -p package/addons/sourcemod/plugins
+    
+    # Since many plugins require other includes, you should also provide these includes in the final src directory.
+    # This way other developer can easily getting your plugin to compile
+    # 
+    # copy compiled plugins, includes and scripts to package
+    - cp compiled/*.smx package/addons/sourcemod/plugins
+    - cp *.sp package/addons/sourcemod/scripting
+    - cp include/*.inc package/addons/sourcemod/scripting/include
+    
+    # At the end we just removing all unwanted files from the final package.
+    # Like our readme files ...
+    - cd package && rm -rf *.md
+    
+    # And finaly we need to publish the compiled plugin as artifact, so people can download it
+    # The content of the archive should be the final version the the users can deploy on their servers
+    artifacts:
+        # We creating a name that is uniq by using the name of the project and the branch/tag
+        name: "${CI_PROJECT_NAME}_core_${CI_COMMIT_REF_NAME}"
+        paths:
+        # This tells GitLab to use all contents of package/ to create the archive
+        - package/*

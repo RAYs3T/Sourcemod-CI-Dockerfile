@@ -1,0 +1,1 @@
+#define FANCY_INCLUDE_VALUE "Value from the include file"
