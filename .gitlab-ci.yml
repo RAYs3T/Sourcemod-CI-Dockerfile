@@ -28,5 +28,7 @@ build:
 test-example-plugin:
     stage: test-example
     image: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    variables:
+        BUILD_DIR: "plugin-example"
     script:
         - spcomp
