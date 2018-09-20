@@ -1,8 +1,12 @@
 # Sourcemod-CI-Dockerfile
 A docker sourcemod plugins build environment, based on debian
 
-## Installation
-TODO
+## Usage
+You can pull this image as you normally do with docker from Docker-Hub
+https://hub.docker.com/r/rays3t/sourcemod-plugins-builder-ci/
+
+```docker pull rays3t/sourcemod-plugins-builder-ci```
+
 
 ## Use together with GitLab runner
 If you want to use this docker image for your sourcemod plugins, using GitLab, here some short notes how to.
