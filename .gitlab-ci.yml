@@ -25,6 +25,7 @@ build-branches:
   <<: *build-image
   except:
   - master
+  - tags
 
 build-tag:
     stage: build
