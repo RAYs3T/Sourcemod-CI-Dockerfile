@@ -9,7 +9,7 @@ variables:
 
 .build-image: &build-image
     script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
 
 build-master:
   stage: build
