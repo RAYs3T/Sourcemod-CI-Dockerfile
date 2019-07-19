@@ -7,7 +7,7 @@
 FROM debian:stretch
 
 LABEL maintainer=rays3t
-LABEL version="1.2.3"
+LABEL version="1.2.4"
 LABEL description="A docker container based on debian/stretch for building sourcemod plugins (.sp).\
 This is intended to be used in an CI environment like GitLab. \
 It also adds a little wrapper script for the spcomp that abstracts the sourcemod libs from your plugin ones"
@@ -39,7 +39,7 @@ USER smuser
 WORKDIR /home/smuser
 
 # Pull the latest stable sourcemod version
-RUN BASE_SM_DL_URL=http://www.sourcemod.net/smdrop/1.8 && \
+RUN BASE_SM_DL_URL=http://www.sourcemod.net/smdrop/1.9 && \
 	LATEST_SM_VERSION=`wget $BASE_SM_DL_URL/sourcemod-latest-linux -q -O -` && \
 	echo Detected sourcemod version: $LATEST_SM_VERSION && \
 	wget -qO sourcemod.tar.gz $BASE_SM_DL_URL/$LATEST_SM_VERSION
