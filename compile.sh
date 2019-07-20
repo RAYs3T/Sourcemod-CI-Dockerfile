@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Path the the compiler executable
+# Path to the compiler executable
 SP_COMP_EXE=/home/smuser/sourcemod/addons/sourcemod/scripting/spcomp
 
 # Working directory for custom plugins
-# Check if the build dor was set, if not, use the default one, provided by GitLab Runner
+# Check if the build dir was set, if not, use the default one, provided by GitLab Runner
 if [ ! -n "${BUILD_DIR+1}" ]; then
 	if [ ! -n "${CI_PROJECT_DIR+1}" ]; then
 		echo "ERROR: Neither the BUILD_DIR nor the CI_PROJECT_DIR is set. Please provide a working directory"
@@ -14,8 +14,11 @@ if [ ! -n "${BUILD_DIR+1}" ]; then
 	echo "BUILD_DIR was not set, using default: $BUILD_DIR"
 fi
 
-# Dir for compiled plugins
-COMPILE_DIR=$BUILD_DIR/compiled
+# If no compile directory has been set, use a sane default
+if [ ! -n "${COMPILE_DIR+1}" ]; then
+    COMPILE_DIR=$BUILD_DIR/compiled
+	echo "COMPILE_DIR was not set, using default: $BUILD_DIR/compiled"
+fi
 
 # Replace versions with git tag describe / hash if AUTO_VERSION_REPLACE is set
 if [ -n "${AUTO_VERSION_REPLACE+1}" ]; then
@@ -40,7 +43,7 @@ additional_params=$1
 echo "Using additional params: $additional_params"
 
 function compile_failed() {
-        echo "Seem like a script does not compile, check error out from spcomp above for more details"
+        echo "Seems like a script does not compile, check error output from spcomp above for more details"
         exit 1;
 }
 
@@ -88,4 +91,3 @@ do
 	fi
 done
 cd $dir_before
-
