@@ -27,6 +27,10 @@ if [ -n "${AUTO_VERSION_REPLACE+1}" ]; then
 	echo -n "Resolved git version for version replacement: "
 	REPLACE_VERSION=`git describe --tag`
 	if [ $? -eq 0 ]; then
+		# Remove potentially leading 'v' in tag name
+		if [ ${REPLACE_VERSION:0:1} == 'v' ]; then
+			REPLACE_VERSION=${REPLACE_VERSION:1}
+		fi
 		echo "Using git describe output: $REPLACE_VERSION"
 	else
 		# We were unable to get a version by using "git describe --tag", use hash instead
