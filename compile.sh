@@ -25,12 +25,12 @@ if [ -n "${AUTO_VERSION_REPLACE+1}" ]; then
 	echo ""
 	echo "AUTO_VERSION_REPLACE is set, resolving ..."
 	echo -n "Resolved git version for version replacement: "
-	REPLACE_VERSION=`git describe`
+	REPLACE_VERSION=`git describe --tag`
 	if [ $? -eq 0 ]; then
 		echo "Using git describe output: $REPLACE_VERSION"
 	else
-		# We were unable to get a version by using "git describe", use hash instead
-		echo -n "Unable to get version replacement by using git describe, using hash instead: "
+		# We were unable to get a version by using "git describe --tag", use hash instead
+		echo -n "Unable to get version replacement by using 'git describe --tag', using hash instead: "
 		GIT_HASH=`git log --pretty=format:'%h' -n 1`
 		echo "$GIT_HASH"
 		REPLACE_VERSION="dev-$GIT_HASH"
